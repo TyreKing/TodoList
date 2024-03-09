@@ -8,6 +8,8 @@
           <input type="checkbox" id="checkbox" v-model="checked" />
         </li>
       </ul>
+      <input type="text" v-model="inputText" placeholder="Add TODO">
+      <button @click="addData">ADD</button>
     </div>
   </div>
 </template>
@@ -18,7 +20,9 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      todolist: [] 
+      todolist: [],
+      inputText:'',
+      emptystring:''
     };
   },
   created() {
@@ -33,6 +37,14 @@ export default {
       .catch(error => {
         console.error('Error fetching todo list', error);
       })
+    },
+    addData() {
+      if (this.input !== this.emptystring) {
+          axios.post('http://127.0.0.1:5000/api/todo', {description: this.inputText})
+            .catch(error => {
+              console.error('Error saving data', error)
+            })
+      }
     }
   }
 };
